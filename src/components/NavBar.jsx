@@ -1,9 +1,34 @@
-import React from "react";
+"use client"; // Only needed in Next.js apps
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const NavBar = () => {
+  const [hidden, setHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Handle scroll behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        setHidden(true); // Hide navbar when scrolling down
+      } else {
+        setHidden(false); // Show navbar when scrolling up
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <div className="w-full px-20 py-8 font-['Neue Montreal']  flex justify-between items-center  fixed z-[999] ">
-      <div id="logo">
+    <motion.div
+      initial={{ y: 0 }}
+      animate={{ y: hidden ? "-100%" : "0%" }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="w-full px-20 py-3 font-['Neue Montreal'] flex justify-between items-center fixed z-[999] backdrop-blur-sm bg-white/10 shadow-md transition-all"
+    >
+      {/* Logo */}
       <svg
         width="72"
         height="30"
@@ -32,15 +57,24 @@ const NavBar = () => {
           fill="currentColor"
         ></path>
       </svg>
+
+      {/* Navigation Links */}
+      <div className="links flex gap-10">
+        {["Services", "About Us", "Our Work", "Insights", "Contact Us"].map(
+          (item, idx) => (
+            <a
+              key={idx}
+              href="#"
+              className={`text-white capitalize font-light text-lg mx-4 ${
+                idx === 4 ? "ml-24" : ""
+              }`}
+            >
+              {item}
+            </a>
+          )
+        )}
       </div>
-      <div className="links flex gap-10 ">
-        {
-          ["Services" , "About Us" , "Our Work" , "Insights"  , 'Contact Us'].map((item , idx) => {
-            return <a key={idx} href="#" className={`text-white capitalize font-light text-lg mx-4 ${idx===4 ? "ml-24" : null }`}>{item}</a>
-          })
-        }
-      </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,16 +1,24 @@
 import React from "react";
 import { FaArrowUpLong } from "react-icons/fa6";
+import image from '../assets/image.png'
+import { motion } from "framer-motion";
 
 const LandPage = () => {
   return (
-    <div className="w-full h-screen bg-zinc-900 text-white  ">
+    <div data-scroll data-scroll-speed="-.1"   className="w-full h-screen bg-zinc-900 text-white  ">
       <div className="textstructure pt-40  px-20 ">
         {["We Create", "Eye Opening", "Presentations"].map((item, idx) => {
           return (
             <div className="masker">
               <div className="w-fit flex items-center">
                 {idx == 1 ? (
-                  <div className="w-[10vw] bg-rose-500 h-[5vw] mt-2.5 rounded-md"></div>
+                  <motion.div
+                  initial={{ width: "0%" }}
+                  animate={{ width: "8vw" }}
+                  transition={{ ease: [0.45, 0, 0.55, 1] , duration: 1 }}  
+                  className="w-[8vw] bg-rose-500 overflow-hidden h-[5vw] mt-2.5 rounded-md">
+                    <img className="bg-cover w-full h-full " src={image} alt="" />
+                  </motion.div>
                 ) : null}
                 <div
                   key={idx}
